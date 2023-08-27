@@ -1,12 +1,12 @@
 # Unity Build + Steam Deploy Scripts
 Tools for removing some of the tedium of deploying to steam from your local machine.
 
-The scripts allow you to build to multiple target platforms and deploy to steam with a couple of clips from the comfort of Unity.
+The scripts allow you to build to multiple target platforms and deploy to steam with a couple of clicks from the comfort of Unity.
 
 **Note:** This package was made on Windows. It should be simple enough to migrate it to another OS if you need.
 
 ## Prerequisites
-- You should be familiar with building in Unity and deploying your to Steam via SteamPipe. This ReadMe will not guide you through setting any of that up.
+- You should be familiar with building in Unity and deploying to Steam via SteamPipe.
 - You will need [GitBash](https://git-scm.com/downloads) installed or, you can update the ```BuildScript.cs``` script to open your bash terminal of choice.
 
 # Set Up
