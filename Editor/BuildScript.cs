@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Editor
 {
     public static class BuildScript
     {
         //Required
-        //the path to the opening scene in your project
-        private const string DefaultScenePath = "Assets/Scenes/<SCENE_NAME>.unity";
+        private const string ScenesDirectory = "Assets/Scenes";
         
         //Required
         //the directory where your builds will be saved to
         //you can leave it prefilled or export your builds somewhere else
-        private const string BuildBasePath = "Builds/AutoBuilds";
+        private const string AutoBuildsDirectory = "Builds/AutoBuilds";
         
         //Required
         //the directory to the SteamDeploy.sh script
@@ -30,19 +31,23 @@ namespace Editor
         {
             if (_buildName == "") _buildName = Application.productName;
 
-            string[] defaultScene = { DefaultScenePath };
+            //add scenes in build settings to the build
+            var totalScenes = SceneManager.sceneCountInBuildSettings;
+            var sceneNames = new string[totalScenes];
+            for (var i = 0; i < totalScenes; i++)
+                sceneNames[i] = $"{ScenesDirectory}/{Path.GetFileName(SceneUtility.GetScenePathByBuildIndex(i))}";
 
             //the build Targets must be installed for whatever version of Unity you are using
             //install them via Unity Hub
             var builds = new List<BuildStuff>
             {
-                new($"{BuildBasePath}/Windows/{_buildName}.exe", BuildTarget.StandaloneWindows),
+                new($"{AutoBuildsDirectory}/Windows/{_buildName}.exe", BuildTarget.StandaloneWindows),
                 // new($"{BuildBasePath}/Linux/{_buildName}.x86_64", BuildTarget.StandaloneLinux64)
                 // new($"{BuildBasePath}/OSX/{_buildName}.app", BuildTarget.StandaloneOSX)
             };
 
             foreach (var build in builds)
-                BuildPipeline.BuildPlayer(defaultScene, build.Path, build.BuildTarget,
+                BuildPipeline.BuildPlayer(sceneNames, build.Path, build.BuildTarget,
                     BuildOptions.None);
         }
 
